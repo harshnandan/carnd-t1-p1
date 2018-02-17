@@ -1,2 +1,6 @@
 test_images/
 test_videos/
+__pycache__/line_marker.cpython-35.pyc
+__pycache__/helper_fnc.cpython-35.pyc
+.pydevproject
+.project
