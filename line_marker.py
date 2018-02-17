@@ -60,13 +60,14 @@ def lineMarkerFnc(image, figNumber=1, totalFigures=1, figSize=(10,5)):
     # # Draw the lines on the edge image
     lines_edges = weighted_img(color_edges, lines_image, alpha=1.0, beta=1., gamma=0.)
     
-    # plt input image and lane marked image
-    plt.figure(figsize=figSize)
-    plt.subplot(121)
-    plt.imshow(image)
-    plt.subplot(122)
-    plt.imshow(lines_edges)
-    plt.show()
+    return lines_edges
+#     # plt input image and lane marked image
+#     plt.figure(figsize=figSize)
+#     plt.subplot(121)
+#     plt.imshow(image)
+#     plt.subplot(122)
+#     plt.imshow(lines_edges)
+#     plt.show()
     
     
 if __name__ == '__main__':
