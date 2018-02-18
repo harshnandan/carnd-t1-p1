@@ -5,7 +5,7 @@ import cv2
 
 from helper_fnc import *
 
-def lineMarkerFnc(image, figNumber=1, totalFigures=1, figSize=(10,5)):
+def lineMarkerFnc(image, line_state, line_uncertanity, figNumber=1, totalFigures=1, figSize=(10,5)):
     
     imshape = image.shape
     
@@ -34,8 +34,8 @@ def lineMarkerFnc(image, figNumber=1, totalFigures=1, figSize=(10,5)):
 #     plt.show()
 
     vertices = np.array([[(0,height_img),
-                          (np.int32(width_img/2)-10, height_img*0.57),
-                          (np.int32(width_img/2)+10, height_img*0.57), 
+                          (np.int32(width_img/2)-10, height_img*0.55),
+                          (np.int32(width_img/2)+10, height_img*0.55), 
                           (width_img, height_img)]], 
                           dtype=np.int32)
     
@@ -51,13 +51,13 @@ def lineMarkerFnc(image, figNumber=1, totalFigures=1, figSize=(10,5)):
     max_line_gap = 1    
     
     # Run Hough on edge detected image
-    lines_image = hough_lines(masked_edges, rho, theta, threshold, min_line_length, max_line_gap)
+    lines_image = hough_lines(masked_edges, rho, theta, threshold, min_line_length, max_line_gap, line_state, line_uncertanity)
     
     # Create a "color" binary image to combine with line image
     color_edges = np.dstack((edges, edges, edges)) 
     # 
     # # Draw the lines on the edge image
-    lines_edges = weighted_img(image, lines_image, alpha=1.0, beta=1., gamma=0.)
+    lines_edges = weighted_img(image, lines_image['img'], alpha=1.0, beta=1., gamma=0.)
     
     
 #     # plt input image and lane marked image
@@ -68,11 +68,23 @@ def lineMarkerFnc(image, figNumber=1, totalFigures=1, figSize=(10,5)):
 #     plt.imshow(lines_edges)
 #     plt.show()
     
-    return lines_edges
+    return {'img':lines_edges, 'lines':lines_image['lines']}
 
 if __name__ == '__main__':
     fileName = 'solidYellowCurve.jpg'
     image = mpimg.imread('test_images/' + fileName)
-    out_image = lineMarkerFnc(image)
-    cv2.imwrite('./test_images_output/' + fileName, cv2.cvtColor(out_image,cv2.COLOR_RGB2BGR))
+    
+    line_state = np.array([0, 0, 0, 0])
+    line_uncertanity = np.zeros((8,8))
+    line_uncertanity[0] = 1
+    line_uncertanity[1] = 1
+    line_uncertanity[2] = 1000
+    line_uncertanity[3] = 1000
+    line_uncertanity[4] = 1
+    line_uncertanity[5] = 1
+    line_uncertanity[6] = 1000
+    line_uncertanity[7] = 1000
+    
+    out_image = lineMarkerFnc(image, line_state, line_uncertanity)
+    cv2.imwrite('./test_images_output/' + fileName, cv2.cvtColor(out_image['img'],cv2.COLOR_RGB2BGR))
     

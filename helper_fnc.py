@@ -46,7 +46,7 @@ def region_of_interest(img, vertices):
     return masked_image
 
 
-def draw_lines(img, lines, color=[255, 0, 0], thickness=5):
+def draw_lines(img, lines, line_state, P, color=[255, 0, 0], thickness=5):
     """
     NOTE: this is the function you might want to use as a starting point once you want to 
     average/extrapolate the line segments you detect to map out the full
@@ -86,16 +86,40 @@ def draw_lines(img, lines, color=[255, 0, 0], thickness=5):
     criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 10, 1.0)
     ret,label,center=cv2.kmeans(slope_intercept,2,None,criteria,10,cv2.KMEANS_RANDOM_CENTERS)
     
+    second_run = False
+    if (line_state[0,0]!=0 and line_state[4,0]!=0):
+        second_run = True
+    
     if (center.shape[1] == 1):
         m1 = 0.01
         b1 = 0
         m2 = 0.01
         b2 = 0
     else:
-        m1 = center[0, 0]
-        b1 = center[0, 1]
-        m2 = center[1, 0]
-        b2 = center[1, 1]
+        if center[0, 0] < center[1, 0]:
+            m1 = center[0, 0]
+            b1 = center[0, 1]
+            m2 = center[1, 0]
+            b2 = center[1, 1]
+        else:
+            m1 = center[1, 0]
+            b1 = center[1, 1]
+            m2 = center[0, 0]
+            b2 = center[0, 1]
+        
+    print("\r\nMeasurement- {:f} {:f} {:f} {:f}".format(m1, b1, m2, b2))
+    print("\r\n" + str(line_state.T))
+    
+    if second_run:
+        line_state, P = kalmanFilterFnc(line_state, P, np.array([m1, b1, m2, b2]).T)
+        m1 = line_state[0, 0]
+        b1 = line_state[1, 0]
+        m2 = line_state[4, 0]
+        b2 = line_state[5, 0]
+    else:
+        line_state = np.array([m1, b1, 0, 0, m2, b2, 0, 0]).T
+        line_state = line_state[..., np.newaxis]
+    print("  Filtered- {:f} {:f} {:f} {:f}".format(m1, b1, m2, b2))
     
     y1av_1 = img.shape[0]
     x1av_1 = np.int32(1/m1*(y1av_1 - b1))
@@ -116,15 +140,18 @@ def draw_lines(img, lines, color=[255, 0, 0], thickness=5):
 #     # Now separate the data, Note the flatten()
 #     A = slope_intercept[label.ravel()==0]
 #     B = slope_intercept[label.ravel()==1]
-#        
+#          
 #     # Plot the data
 #     plt.scatter(A[:,0],A[:,1])
 #     plt.scatter(B[:,0],B[:,1],c = 'r')
 #     plt.scatter(center[:,0],center[:,1],s = 80,c = 'y', marker = 's')
-#     plt.xlabel('Height'),plt.ylabel('Weight')
+#     plt.scatter([m1, m2], [b1, b2],s = 80,c = 'k', marker = 'x')
+#     plt.xlabel('m'),plt.ylabel('b')
 #     plt.show()  
+
+    return line_state, P
     
-def hough_lines(img, rho, theta, threshold, min_line_len, max_line_gap):
+def hough_lines(img, rho, theta, threshold, min_line_len, max_line_gap, line_state, line_uncertanity):
     """
     `img` should be the output of a Canny transform.
         
@@ -132,8 +159,8 @@ def hough_lines(img, rho, theta, threshold, min_line_len, max_line_gap):
     """
     lines = cv2.HoughLinesP(img, rho, theta, threshold, np.array([]), minLineLength=min_line_len, maxLineGap=max_line_gap)
     line_img = np.zeros((img.shape[0], img.shape[1], 3), dtype=np.uint8)
-    draw_lines(line_img, lines)
-    return line_img
+    smooth_line_parms, P = draw_lines(line_img, lines, line_state, line_uncertanity)
+    return {'img':line_img, 'lines':[smooth_line_parms, P]}
 
 # Python 3 has support for cool math symbols.
 
@@ -151,3 +178,48 @@ def weighted_img(img, initial_img, alpha=0.8, beta=1., gamma=0.):
     """
     return cv2.addWeighted(initial_img, alpha, img, beta, gamma)
 
+def kalmanFilterFnc(x, P, measurement):
+    '''
+    Parameters:
+    x: initial state
+    P: initial uncertainty convariance matrix
+    measurement: observed position (same shape as H*x)
+    R: measurement noise (same shape as H)
+    motion: external motion added to state vector x
+    Q: motion noise (same shape as P)
+    F: next state function: x_prime = F*x
+    H: measurement function: position = H*x
+
+    This version of kalman can be applied to many different situations by
+    appropriately defining F and H 
+    '''
+    R = 0.01
+
+    F = np.matrix([ [1., 0., 1., 0., 0., 0., 0., 0.], 
+                    [0., 1., 0., 1., 0., 0., 0., 0.], 
+                    [0., 0., 1., 0., 0., 0., 0., 0.],
+                    [0., 0., 0., 1., 0., 0., 0., 0.],
+                    [0., 0., 0., 0., 1., 0., 1., 0.], 
+                    [0., 0., 0., 0., 0., 1., 0., 1.], 
+                    [0., 0., 0., 0., 0., 0., 1., 0.],
+                    [0., 0., 0., 0., 0., 0., 0., 1.] ])
+    
+    H = np.matrix([ [1., 0., 0., 0., 0., 0., 0., 0.], 
+                    [0., 1., 0., 0., 0., 0., 0., 0.],
+                    [0., 0., 0., 0., 1., 0., 0., 0.], 
+                    [0., 0., 0., 0., 0., 1., 0., 0.] ])
+
+    # prediction
+    x = (F * x) 
+    P = F * P * F.T
+    
+    # measurement update
+    measurement = measurement[..., np.newaxis]
+    y = measurement - (H * x)
+    S = H * P * H.T + R*np.eye(4)
+    K = P * H.T * S.I
+    x = x + (K * y)
+    I = np.matrix(np.eye(F.shape[0]))
+    P = (I - (K * H)) * P    
+
+    return x, P
