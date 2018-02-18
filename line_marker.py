@@ -13,7 +13,7 @@ def lineMarkerFnc(image, figNumber=1, totalFigures=1, figSize=(10,5)):
     width_img = imshape[1]
     
     
-    print("Height-" + str(height_img) + "; Width-" + str(width_img))
+#     print("Height-" + str(height_img) + "; Width-" + str(width_img))
 #     plt.imshow(image)
 #     plt.show()
     
@@ -27,16 +27,15 @@ def lineMarkerFnc(image, figNumber=1, totalFigures=1, figSize=(10,5)):
     blur = gaussian_blur(gray, kernel_size)
     
     # perform canny edge detection
-    low_threshold = 20
-    high_threshold = 100
+    low_threshold = 50
+    high_threshold = 150
     edges = canny(blur, low_threshold, high_threshold)
 #     plt.imshow(edges, cmap='gray')
 #     plt.show()
-    
-     
+
     vertices = np.array([[(0,height_img),
-                          (np.int32(width_img/2)-10, height_img*0.55),
-                          (np.int32(width_img/2)+10, height_img*0.55), 
+                          (np.int32(width_img/2)-10, height_img*0.57),
+                          (np.int32(width_img/2)+10, height_img*0.57), 
                           (width_img, height_img)]], 
                           dtype=np.int32)
     
@@ -58,9 +57,9 @@ def lineMarkerFnc(image, figNumber=1, totalFigures=1, figSize=(10,5)):
     color_edges = np.dstack((edges, edges, edges)) 
     # 
     # # Draw the lines on the edge image
-    lines_edges = weighted_img(color_edges, lines_image, alpha=1.0, beta=1., gamma=0.)
+    lines_edges = weighted_img(image, lines_image, alpha=1.0, beta=1., gamma=0.)
     
-    return lines_edges
+    
 #     # plt input image and lane marked image
 #     plt.figure(figsize=figSize)
 #     plt.subplot(121)
@@ -69,7 +68,11 @@ def lineMarkerFnc(image, figNumber=1, totalFigures=1, figSize=(10,5)):
 #     plt.imshow(lines_edges)
 #     plt.show()
     
-    
+    return lines_edges
+
 if __name__ == '__main__':
-    image = mpimg.imread("test_images/solidWhiteCurve.jpg")
-    lineMarkerFnc(image)
+    fileName = 'solidYellowCurve.jpg'
+    image = mpimg.imread('test_images/' + fileName)
+    out_image = lineMarkerFnc(image)
+    cv2.imwrite('./test_images_output/' + fileName, cv2.cvtColor(out_image,cv2.COLOR_RGB2BGR))
+    

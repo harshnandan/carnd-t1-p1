@@ -1,6 +1,7 @@
 import math
 import numpy as np
 import cv2
+import matplotlib.pyplot as plt
 
 def grayscale(img):
     """Applies the Grayscale transform
@@ -62,10 +63,67 @@ def draw_lines(img, lines, color=[255, 0, 0], thickness=5):
     If you want to make the lines semi-transparent, think about combining
     this function with the weighted_img() function below
     """
+    slope_intercept = np.zeros((lines.shape[0], 2), dtype=np.float32)
+    counter = 0
+    countList = []
     for line in lines:
         for x1,y1,x2,y2 in line:
             cv2.line(img, (x1, y1), (x2, y2), color, thickness)
+            if (x2==x1):
+                m = 1000
+            else:
+                m = (y2-y1)/(x2-x1)
+            b = y2 - m*x2
+            
+            if np.abs(m) < 0.1:
+                countList.append(counter)
 
+            slope_intercept[counter, :] =  [m, b]
+            counter += 1
+    
+    slope_intercept = np.delete(arr=slope_intercept, obj=countList, axis=0)
+    
+    criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 10, 1.0)
+    ret,label,center=cv2.kmeans(slope_intercept,2,None,criteria,10,cv2.KMEANS_RANDOM_CENTERS)
+    
+    if (center.shape[1] == 1):
+        m1 = 0.01
+        b1 = 0
+        m2 = 0.01
+        b2 = 0
+    else:
+        m1 = center[0, 0]
+        b1 = center[0, 1]
+        m2 = center[1, 0]
+        b2 = center[1, 1]
+    
+    y1av_1 = img.shape[0]
+    x1av_1 = np.int32(1/m1*(y1av_1 - b1))
+    
+    y2av_1 = np.int32(0.6 * img.shape[0])
+    x2av_1 = np.int32(1/m1*(y2av_1 - b1))
+    
+    cv2.line(img, (x1av_1, y1av_1), (x2av_1, y2av_1), [0, 255, 255], thickness)
+    
+    y1av_2 = img.shape[0]
+    x1av_2 = np.int32(1/m2*(y1av_2 - b2))
+    
+    y2av_2 = np.int32(0.6 * img.shape[0])
+    x2av_2 = np.int32(1/m2*(y2av_2 - b2))
+    
+    cv2.line(img, (x1av_2, y1av_2), (x2av_2, y2av_2), [0, 255, 255], thickness)
+    
+#     # Now separate the data, Note the flatten()
+#     A = slope_intercept[label.ravel()==0]
+#     B = slope_intercept[label.ravel()==1]
+#        
+#     # Plot the data
+#     plt.scatter(A[:,0],A[:,1])
+#     plt.scatter(B[:,0],B[:,1],c = 'r')
+#     plt.scatter(center[:,0],center[:,1],s = 80,c = 'y', marker = 's')
+#     plt.xlabel('Height'),plt.ylabel('Weight')
+#     plt.show()  
+    
 def hough_lines(img, rho, theta, threshold, min_line_len, max_line_gap):
     """
     `img` should be the output of a Canny transform.

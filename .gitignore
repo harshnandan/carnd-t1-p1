@@ -5,3 +5,4 @@ __pycache__/helper_fnc.cpython-35.pyc
 .pydevproject
 .project
 test_videos_output/
+test_images_output/
