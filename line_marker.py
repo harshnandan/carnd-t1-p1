@@ -46,8 +46,8 @@ def lineMarkerFnc(image, line_state, line_uncertanity, figNumber=1, totalFigures
     # Define the Hough transform parameters
     rho = 2 
     theta = np.pi/180 
-    threshold = 100     
-    min_line_length = 5 
+    threshold = 80
+    min_line_length = 2 
     max_line_gap = 1    
     
     # Run Hough on edge detected image
