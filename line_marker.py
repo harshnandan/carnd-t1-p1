@@ -13,29 +13,29 @@ def lineMarkerFnc(image, line_state, line_uncertanity, figNumber=1, totalFigures
     width_img = imshape[1]
 #     print("Height-" + str(height_img) + "; Width-" + str(width_img))
 
-    plt.imshow(image)
-    plt.savefig( "./pipeline_steps/step_0_original.png", bbox_inches='tight', transparent="True", pad_inches=0)
+#     plt.imshow(image)
+#     plt.savefig( "./pipeline_steps/step_0_original.png", bbox_inches='tight', transparent="True", pad_inches=0)
 #     plt.show()
     
     
     # convert image to gray scale
     gray = grayscale(image);
-    plt.imshow(gray, cmap='gray')
-    plt.savefig( "./pipeline_steps/step_1_grayScale.png", bbox_inches='tight', transparent="True", pad_inches=0)
+#     plt.imshow(gray, cmap='gray')
+#     plt.savefig( "./pipeline_steps/step_1_grayScale.png", bbox_inches='tight', transparent="True", pad_inches=0)
 #     plt.show()
     
     # perform gaussian blur before feeding to edge detection
     kernel_size = 5 # should be odd number
     blur = gaussian_blur(gray, kernel_size)
-    plt.imshow(blur, cmap='gray')
-    plt.savefig( "./pipeline_steps/step_2_blur.png", bbox_inches='tight', transparent="True", pad_inches=0)
+#     plt.imshow(blur, cmap='gray')
+#     plt.savefig( "./pipeline_steps/step_2_blur.png", bbox_inches='tight', transparent="True", pad_inches=0)
     
     # perform canny edge detection
     low_threshold = 50
     high_threshold = 150
     edges = canny(blur, low_threshold, high_threshold)
-    plt.imshow(edges, cmap='gray')
-    plt.savefig( "./pipeline_steps/step_3_CannyEdge.png", bbox_inches='tight', transparent="True", pad_inches=0)
+#     plt.imshow(edges, cmap='gray')
+#     plt.savefig( "./pipeline_steps/step_3_CannyEdge.png", bbox_inches='tight', transparent="True", pad_inches=0)
 #     plt.show()
 
     vertices = np.array([[(0,height_img),
@@ -45,8 +45,8 @@ def lineMarkerFnc(image, line_state, line_uncertanity, figNumber=1, totalFigures
                           dtype=np.int32)
     
     masked_edges = region_of_interest(edges, vertices)
-    plt.imshow(masked_edges, cmap='gray')
-    plt.savefig( "./pipeline_steps/step_4_RegionInterest.png", bbox_inches='tight', transparent="True", pad_inches=0)
+#     plt.imshow(masked_edges, cmap='gray')
+#     plt.savefig( "./pipeline_steps/step_4_RegionInterest.png", bbox_inches='tight', transparent="True", pad_inches=0)
 #     plt.show()
     
     # Define the Hough transform parameters
@@ -58,16 +58,16 @@ def lineMarkerFnc(image, line_state, line_uncertanity, figNumber=1, totalFigures
     
     # Run Hough on edge detected image
     lines_image = hough_lines(masked_edges, rho, theta, threshold, min_line_length, max_line_gap, line_state, line_uncertanity)
-    plt.imshow(lines_image['img'], cmap='gray')
-    plt.savefig( "./pipeline_steps/step_5_Lines.png", bbox_inches='tight', transparent="True", pad_inches=0)
+#     plt.imshow(lines_image['img'], cmap='gray')
+#     plt.savefig( "./pipeline_steps/step_5_Lines.png", bbox_inches='tight', transparent="True", pad_inches=0)
     
     # Create a "color" binary image to combine with line image
     color_edges = np.dstack((edges, edges, edges)) 
     # 
     # # Draw the lines on the edge image
     lines_edges = weighted_img(image, lines_image['img'], alpha=1.0, beta=1., gamma=0.)
-    plt.imshow(lines_edges)
-    plt.savefig( "./pipeline_steps/step_6_Superimposed.png", bbox_inches='tight', transparent="True", pad_inches=0)
+#     plt.imshow(lines_edges)
+#     plt.savefig( "./pipeline_steps/step_6_Superimposed.png", bbox_inches='tight', transparent="True", pad_inches=0)
 
     
 #     # plt input image and lane marked image

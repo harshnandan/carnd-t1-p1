@@ -46,7 +46,7 @@ def region_of_interest(img, vertices):
     return masked_image
 
 
-def draw_lines(img, lines, line_state, P, color=[255, 0, 0], thickness=5):
+def draw_lines(img, lines, line_state, P, color=[0, 255, 255], thickness=5):
     """
     NOTE: this is the function you might want to use as a starting point once you want to 
     average/extrapolate the line segments you detect to map out the full
@@ -68,7 +68,7 @@ def draw_lines(img, lines, line_state, P, color=[255, 0, 0], thickness=5):
     countList = []
     for line in lines:
         for x1,y1,x2,y2 in line:
-            cv2.line(img, (x1, y1), (x2, y2), color, thickness)
+#             cv2.line(img, (x1, y1), (x2, y2), color, thickness)
             if (x2==x1):
                 m = 1000
             else:
@@ -127,7 +127,7 @@ def draw_lines(img, lines, line_state, P, color=[255, 0, 0], thickness=5):
     y2av_1 = np.int32(0.6 * img.shape[0])
     x2av_1 = np.int32(1/m1*(y2av_1 - b1))
     
-    cv2.line(img, (x1av_1, y1av_1), (x2av_1, y2av_1), [0, 255, 255], thickness)
+    cv2.line(img, (x1av_1, y1av_1), (x2av_1, y2av_1), [255, 0, 0], thickness)
     
     y1av_2 = img.shape[0]
     x1av_2 = np.int32(1/m2*(y1av_2 - b2))
@@ -135,19 +135,20 @@ def draw_lines(img, lines, line_state, P, color=[255, 0, 0], thickness=5):
     y2av_2 = np.int32(0.6 * img.shape[0])
     x2av_2 = np.int32(1/m2*(y2av_2 - b2))
     
-    cv2.line(img, (x1av_2, y1av_2), (x2av_2, y2av_2), [0, 255, 255], thickness)
+    cv2.line(img, (x1av_2, y1av_2), (x2av_2, y2av_2), [255, 0, 0], thickness)
     
-#     # Now separate the data, Note the flatten()
-#     A = slope_intercept[label.ravel()==0]
-#     B = slope_intercept[label.ravel()==1]
-#           
-#     # Plot the data
-#     plt.scatter(A[:,0],A[:,1])
-#     plt.scatter(B[:,0],B[:,1],c = 'r')
-#     plt.scatter(center[:,0],center[:,1],s = 80,c = 'y', marker = 's')
-#     plt.scatter([m1, m2], [b1, b2],s = 80,c = 'k', marker = 'x')
-#     plt.xlabel('m'),plt.ylabel('b')
-#     plt.show()  
+    # Now separate the data, Note the flatten()
+    A = slope_intercept[label.ravel()==0]
+    B = slope_intercept[label.ravel()==1]
+           
+    # Plot the data
+    plt.scatter(A[:,0],A[:,1])
+    plt.scatter(B[:,0],B[:,1],c = 'r')
+    plt.scatter(center[:,0],center[:,1],s = 80,c = 'y', marker = 's')
+    plt.scatter([m1, m2], [b1, b2],s = 80,c = 'k', marker = 'x')
+    plt.xlabel('m'),plt.ylabel('b')
+    plt.savefig( "./pipeline_steps/step_7_Slope_intercept_KMean.png", bbox_inches='tight', transparent="True", pad_inches=0)
+#    plt.show()  
 
     return line_state, P
     
