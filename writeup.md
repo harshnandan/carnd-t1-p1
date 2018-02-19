@@ -26,8 +26,9 @@ The goals / steps of this project are the following:
 My pipeline consisted of 5 steps. The pipeline is shown below with output for each step:
 <img src="./pipeline_steps/step_0_original.png" width="480" alt="Combined Image"/>
 
+
 * First, I converted the images to grayscale, 
-<img src="./pipeline_steps/step_1_grayScale.png.png" width="480" alt="Combined Image"/>
+<img src="./pipeline_steps/step_1_grayScale.png" width="480" alt="Combined Image"/>
 
 * then I applied Gaussian Blur to reduce noise in the image so that Canny edge detection can pick up actual edges
 <img src="./pipeline_steps/step_2_blur.png" width="480" alt="Combined Image"/>
@@ -36,8 +37,7 @@ My pipeline consisted of 5 steps. The pipeline is shown below with output for ea
 <img src="./pipeline_steps/step_3_CannyEdge.png" width="480" alt="Combined Image"/>
 
 * A mask was designed keeping in mind the perspective view of the lane, this helps to focus on region of interest when perform line detection using Hough transform.
-<img src="./pipeline_steps/step_4_RegionInterest.png" width="480" alt="Combined Image"/>
-<img src="./pipeline_steps/step_5_Lines.png" width="480" alt="Combined Image"/>
+<img src="./pipeline_steps/step_4_RegionInterest.png" width="480" alt="Combined Image"/> <img src="./pipeline_steps/step_5_Lines.png" width="480" alt="Combined Image"/>
 
 * A bitwise 'and' operation was  
 <img src="./pipeline_steps/step_6_Superimposed.png" width="480" alt="Combined Image"/>
