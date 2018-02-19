@@ -27,11 +27,9 @@ class image_processor_class():
         self.line_state, self.line_uncertanity = result['lines']
         return result['img']
 
-
-
 # fileName = 'solidWhiteRight.mp4'
-fileName = 'solidYellowLeft.mp4'
-# fileName = 'challenge.mp4'
+# fileName = 'solidYellowLeft.mp4'
+fileName = 'challenge.mp4'
 
 # fileList = os.listdir("test_videos/")
 # for figIdx, fileName in enumerate(fileList):
@@ -39,8 +37,8 @@ fileName = 'solidYellowLeft.mp4'
 inputFile = 'test_videos/' + fileName
 outputFile = 'test_videos_output/' + fileName
 
-clip1 = VideoFileClip(inputFile).subclip(2, 2.5)
-# clip1 = VideoFileClip(inputFile)
+# clip1 = VideoFileClip(inputFile).subclip(0, 5)
+clip1 = VideoFileClip(inputFile)
 
 oImageProc = image_processor_class(clip1, outputFile)
 # white_clip = clip1.fl_image(oImageProc.process_image) 

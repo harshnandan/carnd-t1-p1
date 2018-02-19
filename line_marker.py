@@ -11,8 +11,6 @@ def lineMarkerFnc(image, line_state, line_uncertanity, figNumber=1, totalFigures
     
     height_img = imshape[0]
     width_img = imshape[1]
-    
-    
 #     print("Height-" + str(height_img) + "; Width-" + str(width_img))
 #     plt.imshow(image)
 #     plt.show()
@@ -34,8 +32,8 @@ def lineMarkerFnc(image, line_state, line_uncertanity, figNumber=1, totalFigures
 #     plt.show()
 
     vertices = np.array([[(0,height_img),
-                          (np.int32(width_img/2)-10, height_img*0.55),
-                          (np.int32(width_img/2)+10, height_img*0.55), 
+                          (np.int32(width_img/2)-10, height_img*0.57),
+                          (np.int32(width_img/2)+10, height_img*0.57), 
                           (width_img, height_img)]], 
                           dtype=np.int32)
     
@@ -47,7 +45,7 @@ def lineMarkerFnc(image, line_state, line_uncertanity, figNumber=1, totalFigures
     rho = 2 
     theta = np.pi/180 
     threshold = 80
-    min_line_length = 2 
+    min_line_length = 5 
     max_line_gap = 1    
     
     # Run Hough on edge detected image
