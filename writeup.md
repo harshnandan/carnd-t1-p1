@@ -24,23 +24,23 @@ The goals / steps of this project are the following:
 ### 1. Describe your pipeline. As part of the description, explain how you modified the draw_lines() function.
 
 My pipeline consisted of 5 steps. The pipeline is shown below with output for each step:
-
-* First, I converted the images to grayscale, 
-![step_0_original.png]: https://github.com/harshnandan/carnd-t1-p1/blob/writeup/pipeline_steps/step_0_original.png "Grayscale"
 <img src="./pipeline_steps/step_0_original.png" width="480" alt="Combined Image"/>
 
+* First, I converted the images to grayscale, 
+<img src="./pipeline_steps/step_1_grayScale.png.png" width="480" alt="Combined Image"/>
+
 * then I applied Gaussian Blur to reduce noise in the image so that Canny edge detection can pick up actual edges
-[image2]: ./steps/step_2_blur.png "Blurred"
+<img src="./pipeline_steps/step_2_blur.png" width="480" alt="Combined Image"/>
 
 * This was followed by Canny edge detection which detects the edges in the scene
-[image3]: ./steps/step_3_CannyEdge.png "Edge Detected using Canny Edge detection"
+<img src="./pipeline_steps/step_3_CannyEdge.png" width="480" alt="Combined Image"/>
 
 * A mask was designed keeping in mind the perspective view of the lane, this helps to focus on region of interest when perform line detection using Hough transform.
-[image4]: ./steps/step_4_RegionInterest.png "Region of Interest Mask Applied"
-[image5]: ./steps/step_5_Lines.png "Detected Lines"
+<img src="./pipeline_steps/step_4_RegionInterest.png" width="480" alt="Combined Image"/>
+<img src="./pipeline_steps/step_5_Lines.png" width="480" alt="Combined Image"/>
 
 * A bitwise 'and' operation was  
-[image6]: ./steps/step_6_Superimposed.png "Lines Superimposed on Original Image"
+<img src="./pipeline_steps/step_6_Superimposed.png" width="480" alt="Combined Image"/>
 
 In order to draw a single line on the left and right lanes, I modified the draw_lines() function by ...
 
