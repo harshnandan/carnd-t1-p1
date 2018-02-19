@@ -26,7 +26,7 @@ The goals / steps of this project are the following:
 My pipeline consisted of 5 steps. The pipeline is shown below with output for each step:
 
 * First, I converted the images to grayscale, 
-[image1]: ./pipeline_steps/step_1_grayScale.png "Grayscale"
+![image1]: ./pipeline_steps/step_1_grayScale.png "Grayscale"
 
 * then I applied Gaussian Blur to reduce noise in the image so that Canny edge detection can pick up actual edges
 [image2]: ./steps/step_2_blur.png "Blurred"
