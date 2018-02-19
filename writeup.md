@@ -12,11 +12,6 @@ The goals / steps of this project are the following:
 * Make a pipeline that finds lane lines on the road
 * Reflect on your work in a written report
 
-
-[//]: # (Image References)
-
-[image1]: ./examples/grayscale.jpg "Grayscale"
-
 ---
 
 ### Reflection
@@ -36,18 +31,14 @@ My pipeline consisted of 5 steps. The pipeline is shown below with output for ea
 * This was followed by Canny edge detection which detects the edges in the scene
 <img src="./pipeline_steps/step_3_CannyEdge.png" width="480" alt="Combined Image"/>
 
-* A mask was designed keeping in mind the perspective view of the lane, this helps to focus on region of interest when perform line detection using Hough transform.
+* A mask was designed keeping in mind the perspective view of the lane, this helps to focus on region of interest when perform line detection using Hough transform
+
 <img src="./pipeline_steps/step_4_RegionInterest.png" width="480" alt="Combined Image"/> <img src="./pipeline_steps/step_5_Lines.png" width="480" alt="Combined Image"/>
 
-* A bitwise 'and' operation was  
+* A weighted sum between the original image and image with lines is done to draw the lines on the image.
 <img src="./pipeline_steps/step_6_Superimposed.png" width="480" alt="Combined Image"/>
 
-In order to draw a single line on the left and right lanes, I modified the draw_lines() function by ...
-
-If you'd like to include images to show how the pipeline works, here is how to include an image: 
-
-![alt text][image1]
-
+* 
 
 ### 2. Identify potential shortcomings with your current pipeline
 
