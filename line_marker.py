@@ -37,7 +37,8 @@ def lineMarkerFnc(image, line_state, line_uncertanity, figNumber=1, totalFigures
 #     plt.imshow(edges, cmap='gray')
 #     plt.savefig( "./pipeline_steps/step_3_CannyEdge.png", bbox_inches='tight', transparent="True", pad_inches=0)
 #     plt.show()
-
+    
+    # define vertices for the mask
     vertices = np.array([[(0,height_img),
                           (np.int32(width_img/2)-10, height_img*0.57),
                           (np.int32(width_img/2)+10, height_img*0.57), 
@@ -69,23 +70,17 @@ def lineMarkerFnc(image, line_state, line_uncertanity, figNumber=1, totalFigures
 #     plt.imshow(lines_edges)
 #     plt.savefig( "./pipeline_steps/step_6_Superimposed.png", bbox_inches='tight', transparent="True", pad_inches=0)
 
-    
-#     # plt input image and lane marked image
-#     plt.figure(figsize=figSize)
-#     plt.subplot(121)
-#     plt.imshow(image)
-#     plt.subplot(122)
-#     plt.imshow(lines_edges)
-#     plt.show()
-    
     return {'img':lines_edges, 'lines':lines_image['lines']}
 
 if __name__ == '__main__':
     fileName = 'solidYellowCurve.jpg'
     image = mpimg.imread('test_images/' + fileName)
     
+    # Kalman filtering: create initial estimate of 
+    # slope/intercept and their derivate
     line_state = np.array([0, 0, 0, 0, 0, 0, 0, 0])
     line_state = line_state[..., np.newaxis]
+    # define initial guess for measurement uncerenity
     line_uncertanity = np.zeros((8,8))
     line_uncertanity[0] = 1
     line_uncertanity[1] = 1

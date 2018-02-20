@@ -47,54 +47,52 @@ def region_of_interest(img, vertices):
 
 
 def draw_lines(img, lines, line_state, P, color=[0, 255, 255], thickness=5):
-    """
-    NOTE: this is the function you might want to use as a starting point once you want to 
-    average/extrapolate the line segments you detect to map out the full
-    extent of the lane (going from the result shown in raw-lines-example.mp4
-    to that shown in P1_example.mp4).  
+
     
-    Think about things like separating line segments by their 
-    slope ((y2-y1)/(x2-x1)) to decide which segments are part of the left
-    line vs. the right line.  Then, you can average the position of each of 
-    the lines and extrapolate to the top and bottom of the lane.
-    
-    This function draws `lines` with `color` and `thickness`.    
-    Lines are drawn on the image inplace (mutates the image).
-    If you want to make the lines semi-transparent, think about combining
-    this function with the weighted_img() function below
-    """
     slope_intercept = np.zeros((lines.shape[0], 2), dtype=np.float32)
     counter = 0
     countList = []
+    # loop over all the lines detected by Hough transform 
     for line in lines:
         for x1,y1,x2,y2 in line:
-#             cv2.line(img, (x1, y1), (x2, y2), color, thickness)
+            # cv2.line(img, (x1, y1), (x2, y2), color, thickness)
+            # calculate slope of each line
+            # avoid devide by zero condition
             if (x2==x1):
                 m = 1000
             else:
                 m = (y2-y1)/(x2-x1)
             b = y2 - m*x2
             
+            # ignore lines which are almost horizontal
+            # especially useful for the challenge video
             if np.abs(m) < 0.1:
                 countList.append(counter)
 
             slope_intercept[counter, :] =  [m, b]
             counter += 1
     
+    # delete rows corresponding to lines which are almost horizontal
     slope_intercept = np.delete(arr=slope_intercept, obj=countList, axis=0)
     
+    # Conduct K mean clustering to find mean slope and intercept
+    # for two lane markers
     criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 10, 1.0)
     ret, label, center = cv2.kmeans(slope_intercept,2,None,criteria,10,cv2.KMEANS_RANDOM_CENTERS)
     
+    # Flag to start kamlman filtering only in second iteration for videos
+    # Kalman filter does not engage for static image
     second_run = False
     if (line_state[0,0]!=0 and line_state[4,0]!=0):
         second_run = True
     
+    # if clustering finds only one class
+    # assume it is the same as last state
     if (center.shape[1] == 1):
-        m1 = 0.01
-        b1 = 0
-        m2 = 0.01
-        b2 = 0
+        m1 = line_state[0,0]
+        b1 = line_state[1,0]
+        m2 = line_state[4,0]
+        b2 = line_state[5,0]
     else:
         if center[0, 0] < center[1, 0]:
             m1 = center[0, 0]
@@ -106,10 +104,8 @@ def draw_lines(img, lines, line_state, P, color=[0, 255, 255], thickness=5):
             b1 = center[1, 1]
             m2 = center[0, 0]
             b2 = center[0, 1]
-        
-#     print("\r\nMeasurement- {:f} {:f} {:f} {:f}".format(m1, b1, m2, b2))
-#     print("\r\n" + str(line_state.T))
-    
+
+    # apply kalman filtering from 2nd frame on
     if second_run:
         line_state, P = kalmanFilterFnc(line_state, P, np.array([m1, b1, m2, b2]).T)
         m1 = line_state[0, 0]
@@ -119,8 +115,8 @@ def draw_lines(img, lines, line_state, P, color=[0, 255, 255], thickness=5):
     else:
         line_state = np.array([m1, b1, 0, 0, m2, b2, 0, 0]).T
         line_state = line_state[..., np.newaxis]
-#     print("  Filtered- {:f} {:f} {:f} {:f}".format(m1, b1, m2, b2))
     
+    # draw lines in region of interest
     y1av_1 = img.shape[0]
     x1av_1 = np.int32(1/m1*(y1av_1 - b1))
     
@@ -136,7 +132,8 @@ def draw_lines(img, lines, line_state, P, color=[0, 255, 255], thickness=5):
     x2av_2 = np.int32(1/m2*(y2av_2 - b2))
     
     cv2.line(img, (x1av_2, y1av_2), (x2av_2, y2av_2), [255, 0, 0], thickness)
-    
+
+#     Some debug plotting code    
 #     # Now separate the data, Note the flatten()
 #     A = slope_intercept[label.ravel()==0]
 #     B = slope_intercept[label.ravel()==1]

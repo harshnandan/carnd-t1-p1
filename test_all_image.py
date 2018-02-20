@@ -5,7 +5,11 @@ import matplotlib.image as mpimg
 fileList = os.listdir("test_images/")
 numFig = len(fileList)
 
-line_state = np.array([0, 0, 0, 0])
+# Kalman filtering: create initial estimate of 
+# slope/intercept and their derivate
+line_state = np.array([0, 0, 0, 0, 0, 0, 0, 0])
+line_state = line_state[..., np.newaxis]
+# define initial guess for measurement uncerenity
 line_uncertanity = np.zeros((8,8))
 line_uncertanity[0] = 1
 line_uncertanity[1] = 1
@@ -16,6 +20,7 @@ line_uncertanity[5] = 1
 line_uncertanity[6] = 1000
 line_uncertanity[7] = 1000
 
+# iterate over all files
 for figIdx, fileName in enumerate(fileList):
     # read image
     image = mpimg.imread('./test_images/' + fileName)
