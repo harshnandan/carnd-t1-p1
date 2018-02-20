@@ -137,18 +137,18 @@ def draw_lines(img, lines, line_state, P, color=[0, 255, 255], thickness=5):
     
     cv2.line(img, (x1av_2, y1av_2), (x2av_2, y2av_2), [255, 0, 0], thickness)
     
-    # Now separate the data, Note the flatten()
-    A = slope_intercept[label.ravel()==0]
-    B = slope_intercept[label.ravel()==1]
-           
-    # Plot the data
-    plt.scatter(A[:,0],A[:,1])
-    plt.scatter(B[:,0],B[:,1],c = 'r')
-    plt.scatter(center[:,0],center[:,1],s = 80,c = 'y', marker = 's')
-    plt.scatter([m1, m2], [b1, b2],s = 80,c = 'k', marker = 'x')
-    plt.xlabel('m'),plt.ylabel('b')
-    plt.savefig( "./pipeline_steps/step_7_Slope_intercept_KMean.png", bbox_inches='tight', transparent="True", pad_inches=0)
-#    plt.show()  
+#     # Now separate the data, Note the flatten()
+#     A = slope_intercept[label.ravel()==0]
+#     B = slope_intercept[label.ravel()==1]
+#            
+#     # Plot the data
+#     plt.scatter(A[:,0],A[:,1])
+#     plt.scatter(B[:,0],B[:,1],c = 'r')
+#     plt.scatter(center[:,0],center[:,1],s = 80,c = 'y', marker = 's')
+#     plt.scatter([m1, m2], [b1, b2],s = 80,c = 'k', marker = 'x')
+#     plt.xlabel('m'),plt.ylabel('b')
+#     plt.savefig( "./pipeline_steps/step_7_Slope_intercept_KMean.png", bbox_inches='tight', transparent="True", pad_inches=0)
+# #    plt.show()  
 
     return line_state, P
     

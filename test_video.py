@@ -28,8 +28,8 @@ class image_processor_class():
         return result['img']
 
 # fileName = 'solidWhiteRight.mp4'
-# fileName = 'solidYellowLeft.mp4'
-fileName = 'challenge.mp4'
+fileName = 'solidYellowLeft.mp4'
+# fileName = 'challenge.mp4'
 
 # fileList = os.listdir("test_videos/")
 # for figIdx, fileName in enumerate(fileList):

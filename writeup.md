@@ -40,9 +40,16 @@ My pipeline consisted of 5 steps. The pipeline is shown below with output for ea
 
 * The objective of the project was to mark the lane marker with a continuous line. It is seen in the image below that the the slope and intercept of each line (calculated using [x1, y1] and [x2, y2]). It is easily seen that point cloud can be seperated in two classes.
 <img src="./pipeline_steps/step_7_Slope_intercept_KMean.png" width="480" alt="Combined Image"/>
-I employed k-mean clustering two cluster the point clound (circular dots) in two regions and calculated the mean (square with a cross) slope and intercept for two regions.
+I employed k-mean clustering to cluster the point clound (circular dots) in two regions and calculated the mean (square with a cross) slope and intercept for two regions. This provide me with an average slope for left and right lane marker.
+<img src="./pipeline_steps/solidYellowCurve.jpg" width="480" alt="Combined Image"/>
 
+* While processing the challenge video it was noticed that lot of horizontal lines were detected, even after trying to tune different paprameters in the pipeline descried above. Hence, I defined an ignore zone in the slope-intercept plot for lane line detection, as lane markers can never be horizontal. I ignored the slopes between -0.1 to +0.1.
 
+* Another feature was introduced to smooth out the jumpy behavior of the extrapolated lines. This was accomplished by implementing a Kalman filter function which smooths out the jumpy behavior through online filtering of mean slope and intercept described in the previous step.
+
+| Raw Lane Marker Lines  | Kalman Filtered Lane Marker Lines |
+| ------------- | ------------- |
+|<iframe width="560" height="315" src="https://www.youtube.com/embed/zlkc1QezSnk" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe> | <iframe width="560" height="315" src="https://www.youtube.com/embed/aS_0JBul5hU" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 ### 2. Identify potential shortcomings with your current pipeline
 
