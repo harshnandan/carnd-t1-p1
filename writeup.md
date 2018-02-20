@@ -49,15 +49,9 @@ I employed k-mean clustering to cluster the point clound (circular dots) in two 
 
 | Raw Lane Marker Lines  | Kalman Filtered Lane Marker Lines |
 | ------------- | ------------- |
-|<iframe width="560" height="315" src="https://www.youtube.com/embed/zlkc1QezSnk" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe> | <iframe width="560" height="315" src="https://www.youtube.com/embed/aS_0JBul5hU" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+|[![White_Unfiltered](http://img.youtube.com/vi/zlkc1QezSnk/0.jpg)](http://www.youtube.com/watch?v=zlkc1QezSnk "Unfiltered Response") | [![White_Filtered](http://img.youtube.com/vi/aS_0JBul5hU/0.jpg)](http://www.youtube.com/watch?v=aS_0JBul5hU "Filtered Response")
 
-<object width="425" height="350">
-  <param name="movie" value="https://youtu.be/zlkc1QezSnk" />
-  <param name="wmode" value="transparent" />
-  <embed src="http://www.youtube.com/user/wwwLoveWatercom?v=BTRN1YETpyg"
-         type="application/x-shockwave-flash"
-         wmode="transparent" width="425" height="350" />
-</object>
+
 
 ### 2. Identify potential shortcomings with your current pipeline
 
