@@ -57,14 +57,20 @@ I employed k-mean clustering to cluster the point clound (circular dots) in two 
 
 ### 2. Identify potential shortcomings with your current pipeline
 
+There are few shortcomings I see here.
 
-One potential shortcoming would be what would happen when ... 
+* I sure that the pipeline will behave poorely if there is a car in the region of interest as the algorithm does not know how to distinguish between objects on road.
 
-Another shortcoming could be ...
+* Another challenge could be the lighting of the scene changes (eg. shadows, dawn, dusk or night)
+
+* If there are other kind of markers on the road it may create problem for this pipeline.
 
 
 ### 3. Suggest possible improvements to your pipeline
 
-A possible improvement would be to ...
+* It will be significant improvement if the code knows what it is looking for rather than isolating features and then assuming that the detected lines are lanes.
 
+* Also the lane marker should be a higher order polynamial rather than a staright line. This will help the code see upcoming turns.
+
+* The code should also be able to filter out different objects (other cars, humans etc.) in region of interest.
 Another potential improvement could be to ...
