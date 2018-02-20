@@ -2,7 +2,7 @@
 
 ---
 
-** The goals/steps of this project are the following:
+** The goals/steps of this project are the following: **
 * Make a pipeline that finds lane lines on the road
 * Reflect on your work in a written report
 
@@ -10,7 +10,7 @@
 
 ### Reflection
 
-### 1. Describe your pipeline. As part of the description, explain how you modified the draw_lines() function.
+### 1. Description of pipeline
 
 My pipeline consisted of 5 steps. The pipeline is shown below with output for each step:
 <img src="./pipeline_steps/step_0_original.png" width="480" alt="Combined Image"/>
@@ -32,6 +32,7 @@ My pipeline consisted of 5 steps. The pipeline is shown below with output for ea
 * A weighted sum of the original image and image with lines is done to draw the lines on the image.
 <img src="./pipeline_steps/step_6_Superimposed.png" width="480" alt="Combined Image"/>
 
+### 2. Description of improvements to draw_lines() function
 * The objective of the project was to mark the lane marker with a continuous line. It is seen in the image below that the slope and intercept of each line (calculated using [x1, y1] and [x2, y2]). It is easily seen that point cloud can be separated into two classes.
 <img src="./pipeline_steps/step_7_Slope_intercept_KMean.png" width="480" alt="Combined Image"/>
 I employed k-mean clustering to cluster the point cloud (circular dots) in two regions and calculated the mean (square with a cross) slope and intercept for two regions. This provides me with an average slope of left and a right lane marker.
