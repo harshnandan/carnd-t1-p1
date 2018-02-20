@@ -23,18 +23,18 @@ Please refer to "writeup.md"
 ## File Description ##
 ---
 * Input data:
-** ./test_images - contains all images used to evaluate the pipeline
-** ./test_videos - contains all videos used to evaluate the pipeline
+    * ./test_images - contains all images used to evaluate the pipeline
+    * ./test_videos - contains all videos used to evaluate the pipeline
 
 * I have created both python scripts and Jupyter notebook for this project
-** ./pipeline_steps - contains images corresponding to major steps in the pipeline
-** ./P1.ipynb - Jupyter notebook with code to accomplish the objective of this project
-** Python script implementation:
-*** ./helper_fnc.py - provided helper functions, also contains updated draw_lines() and kalman filter implementation
-*** ./line_marker.py - processing pipeline
-*** ./test_all_image.py - test all images
-*** ./test_video.py - test all videos
+    * ./pipeline_steps - contains images corresponding to major steps in the pipeline
+    * ./P1.ipynb - Jupyter notebook with code to accomplish the objective of this project
+    * Python script implementation:
+        * ./helper_fnc.py - provided helper functions, also contains updated draw_lines() and kalman filter implementation
+        * ./line_marker.py - processing pipeline
+        * ./test_all_image.py - test all images
+        * ./test_video.py - test all videos
 
 * Input data:
-** ./test_images_output - contains all outputs corresponding to image
-** ./test_videos_output - contains all outputs (filtered/unfiltered) corresponding to video
+    * ./test_images_output - contains all outputs corresponding to image
+    * ./test_videos_output - contains all outputs (filtered/unfiltered) corresponding to video
