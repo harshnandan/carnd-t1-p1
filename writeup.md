@@ -51,11 +51,13 @@ I employed k-mean clustering to cluster the point clound (circular dots) in two 
 | ------------- | ------------- |
 |<iframe width="560" height="315" src="https://www.youtube.com/embed/zlkc1QezSnk" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe> | <iframe width="560" height="315" src="https://www.youtube.com/embed/aS_0JBul5hU" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
-<div class="video">
-    <figure>
-        <iframe width="640" height="480" src="https://www.youtube.com/embed/zlkc1QezSnk" frameborder="0" allowfullscreen></iframe>
-    </figure>
-</div>
+<object width="425" height="350">
+  <param name="movie" value="https://youtu.be/zlkc1QezSnk" />
+  <param name="wmode" value="transparent" />
+  <embed src="http://www.youtube.com/user/wwwLoveWatercom?v=BTRN1YETpyg"
+         type="application/x-shockwave-flash"
+         wmode="transparent" width="425" height="350" />
+</object>
 
 ### 2. Identify potential shortcomings with your current pipeline
 
